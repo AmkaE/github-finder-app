@@ -1,3 +1,6 @@
+const reactAppGithubUrl = import.meta.env.VITE_REACT_APP_GITHUB_URL;
+const reactAppGithubToken = import.meta.env.VITE_REACT_APP_GITHUB_TOKEN;
+
 const Home = () => {
 	return (
 		<div>
