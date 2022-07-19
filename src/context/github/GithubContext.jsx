@@ -9,12 +9,15 @@ const GITHUB_TOKEN = import.meta.env.VITE_REACT_APP_GITHUB_TOKEN;
 export const GithubPrivider = ({ children }) => {
 	const intialState = {
 		users: [],
-		loading: true,
+		loading: false,
 	};
 
 	const [state, dispatch] = useReducer(githubReducer, intialState);
 
+	// get intial users (testing purposes)
 	const fetchUsers = async () => {
+		setLoading();
+
 		const options = {
 			headers: {
 				Authorization: `token ${GITHUB_TOKEN}`,
@@ -28,15 +31,16 @@ export const GithubPrivider = ({ children }) => {
 				type: 'GET_USERS',
 				payload: data,
 			});
-		}, 1000);
+		}, 500);
 	};
+
+	const setLoading = () => dispatch({ type: 'SET_LOADING' });
 
 	return (
 		<GithubContext.Provider
 			value={{
 				users: state.users,
 				loading: state.loading,
-				fetchUsers,
 			}}>
 			{children}
 		</GithubContext.Provider>

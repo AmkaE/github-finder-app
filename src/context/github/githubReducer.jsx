@@ -6,6 +6,11 @@ const githubReducer = (currState, action) => {
 				users: action.payload,
 				loading: false,
 			};
+		case 'SET_LOADING':
+			return {
+				...currState,
+				loading: true,
+			};
 		default:
 			return currState;
 	}
