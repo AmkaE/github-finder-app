@@ -1,9 +1,10 @@
 import UserResults from '../components/users/UserResults';
+import UserSearch from '../components/users/UserSearch';
 
 const Home = () => {
 	return (
 		<>
-			{/* @TODO: User search component */}
+			<UserSearch />
 			<UserResults />
 		</>
 	);
