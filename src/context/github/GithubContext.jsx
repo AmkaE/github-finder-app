@@ -9,7 +9,8 @@ const GITHUB_TOKEN = import.meta.env.VITE_REACT_APP_GITHUB_TOKEN;
 export const GithubPrivider = ({ children }) => {
 	const intialState = {
 		users: [],
-		user: [],
+		user: {},
+		repos: [],
 		loading: false,
 	};
 
@@ -65,6 +66,34 @@ export const GithubPrivider = ({ children }) => {
 		}
 	};
 
+	// get user repos
+	const getUserRepos = async login => {
+		setLoading();
+
+		const params = new URLSearchParams({
+			sort: 'created',
+			per_page: 10,
+		});
+
+		const options = {
+			headers: {
+				Authorization: `token ${GITHUB_TOKEN}`,
+			},
+		};
+
+		const res = await fetch(
+			`${GITHUB_URL}/users/${login}/repos?${params}`,
+			options,
+		);
+		const date = await res.json();
+		setTimeout(() => {
+			dispatch({
+				type: 'GET_REPOS',
+				payload: date,
+			});
+		}, 500);
+	};
+
 	// clear users from state
 	const clearSearchResults = () => dispatch({ type: 'CLEAR_SEARCH_RESULTS' });
 
@@ -75,10 +104,12 @@ export const GithubPrivider = ({ children }) => {
 			value={{
 				users: state.users,
 				user: state.user,
+				repos: state.repos,
 				loading: state.loading,
 				searchUsers,
 				clearSearchResults,
 				getUser,
+				getUserRepos,
 			}}>
 			{children}
 		</GithubContext.Provider>
