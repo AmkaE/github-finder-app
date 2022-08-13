@@ -38,6 +38,9 @@ export const GithubPrivider = ({ children }) => {
 		}, 500);
 	};
 
+	// clear users from state
+	const clearSearchResults = () => dispatch({ type: 'CLEAR_SEARCH_RESULTS' });
+
 	const setLoading = () => dispatch({ type: 'SET_LOADING' });
 
 	return (
@@ -46,6 +49,7 @@ export const GithubPrivider = ({ children }) => {
 				users: state.users,
 				loading: state.loading,
 				searchUsers,
+				clearSearchResults,
 			}}>
 			{children}
 		</GithubContext.Provider>
