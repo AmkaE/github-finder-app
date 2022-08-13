@@ -14,9 +14,13 @@ export const GithubPrivider = ({ children }) => {
 
 	const [state, dispatch] = useReducer(githubReducer, intialState);
 
-	// get intial users (testing purposes)
-	const fetchUsers = async () => {
+	// get search results
+	const searchUsers = async text => {
 		setLoading();
+
+		const params = new URLSearchParams({
+			q: text,
+		});
 
 		const options = {
 			headers: {
@@ -24,12 +28,12 @@ export const GithubPrivider = ({ children }) => {
 			},
 		};
 
-		const res = await fetch(`${GITHUB_URL}/users`, options);
-		const data = await res.json();
+		const res = await fetch(`${GITHUB_URL}/search/users?${params}`, options);
+		const { items } = await res.json();
 		setTimeout(() => {
 			dispatch({
 				type: 'GET_USERS',
-				payload: data,
+				payload: items,
 			});
 		}, 500);
 	};
@@ -41,6 +45,7 @@ export const GithubPrivider = ({ children }) => {
 			value={{
 				users: state.users,
 				loading: state.loading,
+				searchUsers,
 			}}>
 			{children}
 		</GithubContext.Provider>
